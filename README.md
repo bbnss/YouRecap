@@ -38,7 +38,7 @@ Given a list of YouTube channels, the script searches for the latest video uploa
 
 1. Clone the repository.
 
-2. Install pip:
+2. Install pip:<br>
    sudo apt install pip
 
 3. Install the virtual environment
