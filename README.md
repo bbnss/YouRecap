@@ -12,7 +12,7 @@
 
 # YouTube Video Summarizer
 
-Summarize YouTube videos in blocks by theme. Create the right prompt based on your topic, and using the OpenAI API you can easily have a summary of the videos every day in your email.
+Summarize YouTube videos by theme. Create the appropriate prompt based on your topic, and using the OpenAI API, you can easily receive a daily summary of the videos in your email
 
 ## Description
 
