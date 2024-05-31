@@ -39,58 +39,58 @@ Given a list of YouTube channels, the script searches for the latest video uploa
 1. Clone the repository.
 
 2. Install pip:<br>
-   sudo apt install pip
+sudo apt install pip
 
 3. Install the virtual environment<br>
 
-  sudo apt-get install python3-venv<br>
-  python3 -m venv your_venv_name<br>
-  source your_venv_name/bin/activate<br>
+sudo apt-get install python3-venv<br>
+python3 -m venv your_venv_name<br>
+source your_venv_name/bin/activate<br>
 
 4. Install dependencies<br>
 
-  pip install -r requirements.txt<br>
+pip install -r requirements.txt<br>
 
 5. Settings for summary summarize.py<br>
-  Insert the OpenAI API key<br>
-  openai.api_key = 'your_openai_API_key'<br>
+Insert the OpenAI API key<br>
+openai.api_key = 'your_openai_API_key'<br>
 
-  Select the model<br>
+Select the model<br>
 
-  model="gpt-4o",<br>
-  model="gpt-3.5-turbo",<br>
+model="gpt-4o",<br>
+model="gpt-3.5-turbo",<br>
 
-  Modify the system and user prompt<br>
+Modify the system and user prompt<br>
 
-  {"role": "system", "content": "Setup_here_your_system_prompt"},<br>
-  {"role": "user", "content": f" Setup_here_your_user_prompt \n\n{testo}"}<br>
+{"role": "system", "content": "Setup_here_your_system_prompt"},<br>
+{"role": "user", "content": f" Setup_here_your_user_prompt \n\n{testo}"}<br>
 
-  Modify (optional)<br>
+Modify (optional)<br>
 
-  max_tokens=4096,<br>
-  temperature=0.7,<br>
+max_tokens=4096,<br>
+temperature=0.7,<br>
 
 6. Add the channels whose latest video you want to summarize in the link file<br>
-  Each channel on a new line in this format<br>
-  https://www.youtube.com/@lexfridman/videos<br>
+Each channel on a new line in this format<br>
+https://www.youtube.com/@lexfridman/videos<br>
 
 7. Settings for sending Email (optional)<br>
-  Set the fields<br>
+Set the fields<br>
 
-  smtp_server = 'smtp.gmail.com'<br>
-  smtp_port = 587<br>
-  email_sender = 'your_sender_email'<br>
-  email_password = 'your_password'<br>
-  email_recipient = 'your_email_recipient'<br>
-  subject = 'Email subject'<br>
-  body = "body text"<br>
+smtp_server = 'smtp.gmail.com'<br>
+smtp_port = 587<br>
+email_sender = 'your_sender_email'<br>
+email_password = 'your_password'<br>
+email_recipient = 'your_email_recipient'<br>
+subject = 'Email subject'<br>
+body = "body text"<br>
 
 8. Add execution permissions<br>
-  sudo chmod +x start.sh<br>
-  sudo chmod +x esegui.sh<br>
+sudo chmod +x start.sh<br>
+sudo chmod +x esegui.sh<br>
 
 9. Start the script<br>
-  ./start<br>
+./start<br>
 
 
 
