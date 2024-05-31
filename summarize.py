@@ -90,7 +90,7 @@ def main():
     # Scrivi il contenuto nel file
     with open(output_file, 'a', encoding='utf-8') as file:
         file.write(f.renderText(current_dir_name))
-        file.write((current_dir_name)
+        file.write(current_dir_name)
         file.write(riassunto)
 
 if __name__ == "__main__":
