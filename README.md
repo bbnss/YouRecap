@@ -51,12 +51,10 @@ source your_venv_name/bin/activate<br>
 
 pip install -r requirements.txt<br>
 
-5. Settings for summary summarize.py<br>
-Insert the OpenAI API key<br>
+5. Editing the file summarize.py<br>
 openai.api_key = 'your_openai_API_key'<br>
 
-Select the model<br>
-
+Choose a model<br>
 model="gpt-4o",<br>
 model="gpt-3.5-turbo",<br>
 
