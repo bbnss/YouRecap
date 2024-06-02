@@ -1,4 +1,4 @@
 yt-dlp
-openai==0.28pip 
+openai==0.28
 pyfiglet
 youtube-transcript-api
