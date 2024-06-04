@@ -13,7 +13,7 @@ current_dir = os.path.dirname(current_file_path)
 current_dir_name = os.path.basename(current_dir)
 
 # Configura la tua chiave API di OpenAI
-openai.api_key = 'your_openai_APi_key'
+openai.api_key = 'YOUR_OPENAI_KEY'
 
 def trova_ultimo_file(cartella):
     files = [os.path.join(cartella, f) for f in os.listdir(cartella) if os.path.isfile(os.path.join(cartella, f))]
@@ -32,8 +32,8 @@ def fai_riassunto(testo):
         # model="gpt-4o",
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Setup_here_your_system_prompt"},
-            {"role": "user", "content": f" Setup_here_your_user_prompt \n\n{testo}"}
+            {"role": "system", "content": "SETUP_YOUR_USER_PROMPT"},
+            {"role": "user", "content": f" SETUP_YOUR_SYSTEM_PROMPT \n\n{testo}"}
         ],
         max_tokens=4096,
         temperature=0.7,
