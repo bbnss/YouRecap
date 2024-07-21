@@ -2,7 +2,7 @@
 
 # Configurazione OpenAI
 OPENAI_API_KEY = 'your_openai_API_key'
-OPENAI_MODEL = "gpt-3.5-turbo"  # o "gpt-4" se preferisci
+OPENAI_MODEL = "gpt-4o-mini"
 
 # Configurazione del prompt
 SYSTEM_PROMPT = "Create a summary capturing the main points and key details"
