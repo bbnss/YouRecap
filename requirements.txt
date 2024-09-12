@@ -1,4 +1,0 @@
-yt-dlp
-openai==0.28
-pyfiglet
-youtube-transcript-api
