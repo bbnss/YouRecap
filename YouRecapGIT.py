@@ -10,7 +10,7 @@ import json
 from github import Github
 from twitter_poster import generate_and_post_tweet
 
-print("Local date and time:", datetime.now())
+print("Data e ora locale:", datetime.now())
 
 def show_spinner():
     spinner = "|/-\\"
@@ -48,8 +48,6 @@ def estrai_video_ids(channel_url):
             print(f"Errore durante l'estrazione dei video: {e}")
 
     return video_info
-
-
 
 def salva_video_ids(file_name, video_info):
     if os.path.exists(file_name):
@@ -101,13 +99,9 @@ def get_transcript(video_id):
                 return transcript, lingua
         print("Nessuna trascrizione generata automaticamente trovata.")
         return None, None
-    except TranscriptsDisabled:
-        print(f"Le trascrizioni sono disabilitate per il video {video_id}.")
-    except NoTranscriptAvailable:
-        print(f"Nessuna trascrizione disponibile per il video {video_id}.")
-    except Exception as e:
-        print(f"Errore durante l'ottenimento della trascrizione: {e}")
-    return None, None
+    except (TranscriptsDisabled, NoTranscriptAvailable, Exception) as e:
+        print(f"Errore trascrizione per il video {video_id}: {str(e)}")
+        return None, None
 
 def salva_trascrizione(cartella, video_id, transcript, lingua):
     file_name = os.path.join(cartella, f'transcript_{video_id}_{lingua}.txt')
@@ -135,8 +129,7 @@ def summarize_text(text):
     except Exception as e:
         print(f"Errore nella generazione del riassunto: {e}")
         return None
-        
-        
+
 def get_next_post_number():
     counter_file = 'post_counter.txt'
     try:
@@ -150,7 +143,7 @@ def get_next_post_number():
     with open(counter_file, 'w') as f:
         f.write(str(counter))
     
-    return counter        
+    return counter
 
 def carica_su_github(riassunti, data_odierna):
     g = Github(GITHUB_TOKEN)
@@ -195,7 +188,6 @@ titolo: {info['title']}
     except Exception as e:
         print(f"Errore durante l'aggiornamento di posts.json: {e}")
 
-
 def main():
     print("""
 __   __          ____                       ____ ___ _____ 
@@ -230,25 +222,21 @@ __   __          ____                       ____ ___ _____
             os.makedirs(cartella_canale)
         
         video_info = estrai_video_ids(channel_url)
-        if video_info:
-            print(f"Titolo del video più recente: {video_info[0]['title']}")
-
-        if video_info:
-            file_name = os.path.join(cartella_canale, 'video_ids.txt')
-            nuovi_video = salva_video_ids(file_name, video_info)
-            if not nuovi_video:
-                print(f"Nessun nuovo video trovato per il canale {nome_canale}.")
-                continue
-            print(f"Salvati {len(video_info)} ID di video nel file {file_name}")
-        else:
-            print(f"Non sono stati trovati video nel canale {nome_canale}.")
+        if not video_info:
+            print(f"Nessun video trovato per il canale {nome_canale}, passo al prossimo canale.")
             continue
+
+        print(f"Titolo del video più recente: {video_info[0]['title']}")
         
+        file_name = os.path.join(cartella_canale, 'video_ids.txt')
+        nuovi_video = salva_video_ids(file_name, video_info)
+        if not nuovi_video:
+            print(f"Nessun nuovo video trovato per il canale {nome_canale}, passo al prossimo canale.")
+            continue
+            
         cartella_data = os.path.join(cartella_canale, data_odierna)
         if not os.path.exists(cartella_data):
             os.makedirs(cartella_data)
-        
-            # ... (codice precedente rimane invariato)
 
         video_id = video_info[0]['id']
         video_titolo = video_info[0]['title']
@@ -257,19 +245,20 @@ __   __          ____                       ____ ___ _____
         if os.path.exists(summary_file):
             print(f"Il riassunto per il video {video_id} è già stato generato.")
             with open(summary_file, 'r', encoding='utf-8') as f:
-                riassunti[nome_canale] = {'riassunto': f.read(), 'title': video_titolo}
+                riassunti[nome_canale] = {'summary': f.read(), 'title': video_titolo}
             continue
 
         transcript, lingua = get_transcript(video_id)
+        if not transcript:
+            print(f"Impossibile ottenere la trascrizione per {video_id}, passo al prossimo canale.")
+            continue
 
-        if transcript:
-            transcript_file = salva_trascrizione(cartella_data, video_id, transcript, lingua)
-            print(f"Trascrizione salvata in: {transcript_file}")
+        transcript_file = salva_trascrizione(cartella_data, video_id, transcript, lingua)
+        print(f"Trascrizione salvata in: {transcript_file}")
 
-            transcript_text = " ".join([entry['text'] for entry in transcript])
-            summary = summarize_text(transcript_text)
+        transcript_text = " ".join([entry['text'] for entry in transcript])
+        summary = summarize_text(transcript_text)
 
-           
         if summary:
             with open(summary_file, 'w', encoding='utf-8') as f:
                 f.write(summary)
@@ -279,13 +268,10 @@ __   __          ____                       ____ ___ _____
             print("-" * 40)
             print(f"Riassunto salvato in: {summary_file}")
             riassunti[nome_canale] = {'summary': summary, 'title': video_info[0]['title']}
-
         else:
-            print(f"Non è stato possibile generare un riassunto per {nome_canale}.")
-    else:
-        print(f"Non è stato possibile recuperare la trascrizione per {nome_canale}.")
+            print(f"Non è stato possibile generare un riassunto per {nome_canale}, passo al prossimo canale.")
+            continue
 
-    
     if riassunti:
         carica_su_github(riassunti, data_odierna)
         generate_and_post_tweet(riassunti)
